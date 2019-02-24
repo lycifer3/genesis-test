@@ -14,7 +14,7 @@ class m130524_201442_init extends Migration
 
         $this->createTable('{{%user}}', [
             'id' => $this->primaryKey(),
-            'username' => $this->string()->notNull()->unique(),
+            'first_name' => $this->string()->notNull(),
             'auth_key' => $this->string(32)->notNull(),
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
@@ -24,6 +24,15 @@ class m130524_201442_init extends Migration
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
+
+        $this->insert('user', [
+            'first_name' => 'admin',
+            'auth_key' => Yii::$app->security->generateRandomString(),
+            'password_hash' => Yii::$app->security->generatePasswordHash('123456'),
+            'email' => 'admin@example.com',
+            'created_at' => (new DateTime())->getTimestamp(),
+            'updated_at' => (new DateTime())->getTimestamp(),
+        ]);
     }
 
     public function down()
